@@ -1,0 +1,25 @@
+* VisualFormatLanguage
+Project 6b - Day30 - HackingWithSwift
+
+** Day 30
+An introduction to Visual Format Language
+
+#+BEGIN_SRC Swift
+	// creating a views dictionary which will be used by the Visual Format Language
+        let viewsDictionary = ["label1": label1, "label2": label2, "label3": label3, "label4": label4, "label5": label5]
+        
+        for label in viewsDictionary.keys {
+            // H: horizontal
+            // | the edges of the superview |
+            // [delimitates the view]
+            // label1 - is the key which will be searched in the viewsDictionary to obtain the view itself
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(label)]|", options: [], metrics:  nil, views: viewsDictionary))
+        }
+        
+        // V: vertical
+        // the - is 10 points by default
+        // missing pipe at the end - it will layout the views starting from the top, at the end it will be whitespace
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label1]-[label2]-[label3]-[label4]-[label5]", options: [], metrics: nil, views: viewsDictionary))
+#+END_SRC
+
+[[Screen Shot 2019-09-06 at 3.27.18 PM.png]]
