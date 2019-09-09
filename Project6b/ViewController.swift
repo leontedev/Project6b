@@ -49,21 +49,45 @@ class ViewController: UIViewController {
         view.addSubview(label4)
         view.addSubview(label5)
         
-        // creating a views dictionary which will be used by the Visual Format Language
-        let viewsDictionary = ["label1": label1, "label2": label2, "label3": label3, "label4": label4, "label5": label5]
+//        // creating a views dictionary which will be used by the Visual Format Language
+//        let viewsDictionary = ["label1": label1, "label2": label2, "label3": label3, "label4": label4, "label5": label5]
+//
+//        for label in viewsDictionary.keys {
+//            // H: horizontal
+//            // | the edges of the superview |
+//            // [delimitates the view]
+//            // label1 - is the key which will be searched in the viewsDictionary to obtain the view itself
+//            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(label)]|", options: [], metrics:  nil, views: viewsDictionary))
+//        }
+//
+//        // instead of repeadtely specifying the value of the constraint eg: label1(==80), a metrics dictionary can be passed instead of the nil eg: label1(labelHeight)
+//        let metrics = ["labelHeight": 88]
+//
+//        // the - is 10 points by default
+//        // @999 sets the priority lower than the default 1000 - so the height of the labels will shrink. The other labels will take the label1 height.
+//        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label1(labelHeight@999)]-[label2(label1)]-[label3(label1)]-[label4(label1)]-[label5(label1)]-(>=10)-|", options: [], metrics: metrics, views: viewsDictionary))
         
-        for label in viewsDictionary.keys {
-            // H: horizontal
-            // | the edges of the superview |
-            // [delimitates the view]
-            // label1 - is the key which will be searched in the viewsDictionary to obtain the view itself
-            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[\(label)]|", options: [], metrics:  nil, views: viewsDictionary))
+        // With Anchors:
+        
+        var previous: UILabel?
+        
+        for label in [label1, label2, label3, label4, label5] {
+            //label.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: nil).isActive = true
+            label.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+            label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+            
+            label.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1/5, constant: -10).isActive = true
+            
+            if let previous = previous {
+                label.topAnchor.constraint(equalTo: previous.bottomAnchor, constant: 10).isActive = true
+            } else {
+                label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+            }
+            
+            previous = label
         }
         
-        // V: vertical
-        // the - is 10 points by default
-        // missing pipe at the end - it will layout the views starting from the top, at the end it will be whitespace
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label1]-[label2]-[label3]-[label4]-[label5]", options: [], metrics: nil, views: viewsDictionary))
+        
         
     }
 
